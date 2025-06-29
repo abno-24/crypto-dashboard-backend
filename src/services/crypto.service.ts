@@ -4,7 +4,7 @@ import pool from "../db/index";
 import dotenv from "dotenv";
 import { CoinGeckoMarketChartResponse } from "../types/coinGecko";
 import { BlockchainInfoChartResponse } from "../types/blockchainInfo";
-import { fetchDuneQueryResult } from "../clients/duneClient";
+import { fetchDuneVolume, fetchDuneQueryResult } from "../clients/duneClient";
 
 dotenv.config();
 
@@ -59,11 +59,15 @@ async function fetchETHData() {
     console.log("Fetching ETH data from Dune...");
 
     const transaction_count = await fetchDuneQueryResult(
-      Number(process.env.DUNE_QUERY_ID)
+      Number(process.env.DUNE_TX_QUERY_ID)
+    );
+
+    const volume_usd = await fetchDuneVolume(
+      Number(process.env.DUNE_VOLUME_QUERY_ID)
     );
 
     // Volume from CoinGecko (optional fallback - if it worked in your dev)
-    const volume_usd = Math.floor(Math.random() * 1_000_000_000); // Placeholder
+    // const volume_usd = Math.floor(Math.random() * 1_000_000_000); // Placeholder
 
     console.log("✅ ETH data fetched from Dune");
 

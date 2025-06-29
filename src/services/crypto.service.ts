@@ -1,4 +1,3 @@
-// src/services/crypto.service.ts
 import axios from "axios";
 import pRetry from "p-retry";
 import pool from "../db/index";
@@ -22,7 +21,20 @@ export async function fetchAndStoreCryptoData() {
           axios.get<CoinGeckoMarketChartResponse>(
             `https://api.coingecko.com/api/v3/coins/${coin.api}/market_chart?vs_currency=usd&days=1`
           ),
-        { retries: 5, minTimeout: 2000, maxTimeout: 10000 }
+        {
+          retries: 5,
+          minTimeout: 10000,
+          maxTimeout: 30000,
+          onFailedAttempt: error => {
+            console.warn(
+              `Attempt ${error.attemptNumber} failed for ${coin.api} volume: ${error.message}. Retrying...`
+            );
+          },
+          shouldRetry: (error: any) => {
+            const status = error.response?.status;
+            return status === 429 || status === 403 || !status; // Retry on rate limits or network errors
+          },
+        }
       );
       const marketData = volumeResponse.data;
       if (!marketData.total_volumes || marketData.total_volumes.length === 0) {
@@ -39,7 +51,16 @@ export async function fetchAndStoreCryptoData() {
               axios.get<BlockchainInfoChartResponse>(
                 "https://api.blockchain.info/charts/n-transactions?timespan=24hours&format=json"
               ),
-            { retries: 5, minTimeout: 2000, maxTimeout: 10000 }
+            {
+              retries: 5,
+              minTimeout: 10000,
+              maxTimeout: 30000,
+              onFailedAttempt: error => {
+                console.warn(
+                  `Attempt ${error.attemptNumber} failed for ${coin.api} tx: ${error.message}. Retrying...`
+                );
+              },
+            }
           );
           const txData = txResponse.data;
           if (!txData.values || txData.values.length === 0) {

@@ -8,7 +8,6 @@ import { fetchETHData } from "../data-sources/fetchETHData";
  *
  * @returns {Promise<void>}
  */
-
 export async function fetchAndStoreCryptoData() {
   try {
     const results = await Promise.all([fetchBTCData(), fetchETHData()]);

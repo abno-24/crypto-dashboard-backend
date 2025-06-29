@@ -16,6 +16,14 @@ const coinMap: { [key: string]: string } = {
   eth: "ETH",
 };
 
+/**
+ * Handles a GET request to /crypto/volume-and-transactions.
+ * Returns crypto data for the past 24 hours for the given coin(s) in the query parameter.
+ *
+ * @param {Request} req - The Express.js request object.
+ * @param {Response} res - The Express.js response object.
+ * @throws {Error} If the query execution fails or if invalid coin names are provided.
+ */
 export async function getVolumeAndTransactions(req: Request, res: Response) {
   try {
     const { coin } = req.query;

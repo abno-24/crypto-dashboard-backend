@@ -9,6 +9,12 @@ dotenv.config({
 
 const PORT = process.env.PORT || 5000;
 
+/**
+ * Initializes the database and starts the cron job for fetching and storing crypto data,
+ * then starts the Express.js server.
+ *
+ * @throws {Error} If there is an error initializing the database or starting the cron job.
+ */
 async function startServer() {
   try {
     await initDb();

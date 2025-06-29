@@ -37,6 +37,16 @@ interface QueryResultResponse {
   };
 }
 
+/**
+ * Executes a Dune Analytics query given its ID and returns the results.
+ *
+ * @param {number} queryId The ID of the query to execute.
+ *
+ * @returns {Promise<DuneResultRow[]>} A promise that resolves to an array of
+ *   row objects containing the results of the query.
+ *
+ * @throws If the query execution fails or times out.
+ */
 async function executeDuneQuery(queryId: number): Promise<DuneResultRow[]> {
   const execRes = await axios.post<ExecuteQueryResponse>(
     `${DUNE_BASE_URL}/query/${queryId}/execute`,
@@ -69,6 +79,13 @@ async function executeDuneQuery(queryId: number): Promise<DuneResultRow[]> {
   throw new Error(`Dune query (ID: ${queryId}) polling timed out.`);
 }
 
+/**
+ * Fetches the Ethereum USD trading volume by executing a Dune Analytics query.
+ *
+ * @param {number} queryId The ID of the Dune query to execute.
+ * @returns {Promise<number>} A promise that resolves to the Ethereum USD volume as a number.
+ * @throws Will throw an error if the query execution fails or if the volume data is invalid or missing.
+ */
 export async function fetchEthUsdVolume(queryId: number): Promise<number> {
   try {
     const rows = await executeDuneQuery(queryId);
@@ -92,6 +109,13 @@ export async function fetchEthUsdVolume(queryId: number): Promise<number> {
   }
 }
 
+/**
+ * Fetches the Ethereum transaction count by executing a Dune Analytics query.
+ *
+ * @param {number} queryId The ID of the Dune query to execute.
+ * @returns {Promise<number>} A promise that resolves to the Ethereum transaction count as a number.
+ * @throws Will throw an error if the query execution fails or if the transaction count data is invalid or missing.
+ */
 export async function fetchEthTransactionCount(
   queryId: number
 ): Promise<number> {

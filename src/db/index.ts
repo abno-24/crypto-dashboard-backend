@@ -11,6 +11,11 @@ const pool = new Pool({
   database: process.env.DB_NAME,
 });
 
+/**
+ * Initializes the PostgreSQL database schema if it does not already exist.
+ *
+ * @throws {Error} If there is an error initializing the database schema.
+ */
 export async function initDb() {
   try {
     await pool.query(`

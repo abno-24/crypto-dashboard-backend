@@ -3,11 +3,13 @@ import pRetry from "p-retry";
 import pool from "../db/index";
 import dotenv from "dotenv";
 import { BlockchainInfoChartResponse } from "../types/blockchainInfo";
-import { fetchDuneVolume, fetchDuneQueryResult } from "../clients/duneClient";
+import {
+  fetchEthUsdVolume,
+  fetchEthTransactionCount,
+} from "../clients/duneClient";
 
 dotenv.config();
 
-// BTC: Fetch from Blockchain.com
 async function fetchBTCData() {
   try {
     console.log("Fetching BTC data from Blockchain API...");
@@ -57,12 +59,12 @@ async function fetchETHData() {
   try {
     console.log("Fetching ETH data from Dune Analytics...");
 
-    const transaction_count = await fetchDuneQueryResult(
-      Number(process.env.DUNE_TX_QUERY_ID)
+    const volume_usd = await fetchEthUsdVolume(
+      Number(process.env.DUNE_VOLUME_QUERY_ID)
     );
 
-    const volume_usd = await fetchDuneVolume(
-      Number(process.env.DUNE_VOLUME_QUERY_ID)
+    const transaction_count = await fetchEthTransactionCount(
+      Number(process.env.DUNE_TX_QUERY_ID)
     );
 
     console.log("✅ ETH data fetched - Powered by Dune Analytics");

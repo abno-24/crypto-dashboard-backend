@@ -2,7 +2,6 @@ import axios from "axios";
 import pRetry from "p-retry";
 import pool from "../db/index";
 import dotenv from "dotenv";
-import { CoinGeckoMarketChartResponse } from "../types/coinGecko";
 import { BlockchainInfoChartResponse } from "../types/blockchainInfo";
 import { fetchDuneVolume, fetchDuneQueryResult } from "../clients/duneClient";
 
@@ -11,7 +10,7 @@ dotenv.config();
 // BTC: Fetch from Blockchain.com
 async function fetchBTCData() {
   try {
-    console.log("Fetching BTC data...");
+    console.log("Fetching BTC data from Blockchain API...");
 
     const [volumeResponse, txResponse] = await Promise.all([
       pRetry(
@@ -56,7 +55,7 @@ async function fetchBTCData() {
 
 async function fetchETHData() {
   try {
-    console.log("Fetching ETH data from Dune...");
+    console.log("Fetching ETH data from Dune Analytics...");
 
     const transaction_count = await fetchDuneQueryResult(
       Number(process.env.DUNE_TX_QUERY_ID)
@@ -66,10 +65,7 @@ async function fetchETHData() {
       Number(process.env.DUNE_VOLUME_QUERY_ID)
     );
 
-    // Volume from CoinGecko (optional fallback - if it worked in your dev)
-    // const volume_usd = Math.floor(Math.random() * 1_000_000_000); // Placeholder
-
-    console.log("✅ ETH data fetched from Dune");
+    console.log("✅ ETH data fetched - Powered by Dune Analytics");
 
     return {
       coin: "ETH",

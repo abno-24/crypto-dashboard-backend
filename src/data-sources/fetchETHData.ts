@@ -3,19 +3,14 @@ import {
   fetchEthUsdVolume,
   fetchEthTransactionCount,
 } from "../clients/duneClient";
+import { fetchEthVolumeFromCoinGecko } from "../clients/coinGeckoClient";
+import { fetchEthTxCountFromEtherscan } from "../clients/etherscanClient";
 
 dotenv.config();
 
 const ETH_VOL_QUERY_ID = process.env.ETH_VOL_QUERY_ID;
 const ETH_TX_QUERY_ID = process.env.ETH_TX_QUERY_ID;
 
-/**
- * Fetches data for Ethereum from Dune Analytics and returns an object with the
- * volume (in USD) and transaction count.
- *
- * @returns {Promise<{ coin: string; volume_usd: number; transaction_count: number; source: string }>} A promise that resolves to an object containing the fetched data.
- * @throws If the API calls fail or if the data is invalid or missing.
- */
 export async function fetchETHData() {
   try {
     console.log("Fetching ETH data from Dune Analytics...");
@@ -34,8 +29,24 @@ export async function fetchETHData() {
       transaction_count,
       source: "Dune Analytics",
     };
-  } catch (error) {
-    console.error("❌ Failed to fetch ETH data:", error);
-    throw error;
+  } catch (duneError) {
+    console.warn("⚠️ Dune failed, falling back to CoinGecko + Etherscan");
+
+    try {
+      const volume_usd = await fetchEthVolumeFromCoinGecko();
+      const transaction_count = await fetchEthTxCountFromEtherscan();
+
+      console.log("✅ ETH fallback data fetched — CoinGecko + Etherscan");
+
+      return {
+        coin: "ETH",
+        volume_usd,
+        transaction_count,
+        source: "Fallback (CoinGecko + Etherscan)",
+      };
+    } catch (fallbackError) {
+      console.error("❌ ETH fallback failed:", fallbackError);
+      throw new Error("Failed to fetch ETH data from both sources");
+    }
   }
 }

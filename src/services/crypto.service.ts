@@ -2,12 +2,6 @@ import pool from "../db/index";
 import { fetchBTCData } from "../data-sources/fetchBTCData";
 import { fetchETHData } from "../data-sources/fetchETHData";
 
-/**
- * Fetches data for Bitcoin and Ethereum from respective APIs and
- * stores it in the 'crypto_data' table in the database.
- *
- * @returns {Promise<void>}
- */
 export async function fetchAndStoreCryptoData() {
   try {
     const results = await Promise.all([fetchBTCData(), fetchETHData()]);

@@ -2,6 +2,13 @@ import axios from "axios";
 import pRetry from "p-retry";
 import { BlockchainInfoChartResponse } from "../types/blockchainInfo";
 
+/**
+ * Fetches the total volume of Bitcoin in USD and the total number of transactions from the
+ * Blockchain.com API.
+ *
+ * @returns {Promise<{ coin: string; volume_usd: number; transaction_count: number; source: string }>} A promise that resolves to an object containing the total volume of Bitcoin in USD and the total number of transactions.
+ * @throws {Error} If the API request fails or if invalid data is returned.
+ */
 export async function fetchBTCData() {
   try {
     console.log("Fetching BTC data from Blockchain API...");

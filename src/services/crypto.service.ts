@@ -2,6 +2,11 @@ import pool from "../db/index";
 import { fetchBTCData } from "../data-sources/fetchBTCData";
 import { fetchETHData } from "../data-sources/fetchETHData";
 
+/**
+ * Fetches and stores the current volume and transaction count for both Bitcoin and Ethereum in the database.
+ * This function is intended to be called at regular intervals by a scheduler.
+ * @throws {Error} If the API request fails or the response is invalid.
+ */
 export async function fetchAndStoreCryptoData() {
   try {
     const results = await Promise.all([fetchBTCData(), fetchETHData()]);

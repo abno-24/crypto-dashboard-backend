@@ -3,6 +3,12 @@ import { CoinGeckoVolResponse } from "../types/coinGecko";
 
 const COINGECKO_API_URL = "https://api.coingecko.com/api/v3/coins/ethereum";
 
+/**
+ * Fetches the total volume of Ethereum in USD from CoinGecko.
+ *
+ * @returns {Promise<number>} The total volume of Ethereum in USD.
+ * @throws {Error} If the API request fails or the response is invalid.
+ */
 export async function fetchEthVolumeFromCoinGecko(): Promise<number> {
   try {
     const res = await axios.get<CoinGeckoVolResponse>(COINGECKO_API_URL, {

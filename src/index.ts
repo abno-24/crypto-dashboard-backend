@@ -10,6 +10,11 @@ dotenv.config({
 
 const PORT = process.env.PORT || 5000;
 
+/**
+ * Starts the Express.js server by initializing the DB, starting the crypto cron job,
+ * and starting the keep-alive ping. If any of these operations fail, the process
+ * will exit with code 1.
+ */
 async function startServer() {
   try {
     await initDb();

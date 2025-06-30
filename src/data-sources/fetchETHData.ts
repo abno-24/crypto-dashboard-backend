@@ -11,6 +11,14 @@ dotenv.config();
 const ETH_VOL_QUERY_ID = process.env.ETH_VOL_QUERY_ID;
 const ETH_TX_QUERY_ID = process.env.ETH_TX_QUERY_ID;
 
+/**
+ * Fetches the total volume of Ethereum in USD and the total number of transactions from Dune Analytics.
+ *
+ * If the Dune query fails, falls back to fetching the volume from CoinGecko and the transaction count from Etherscan.
+ *
+ * @returns {Promise<{ coin: string; volume_usd: number; transaction_count: number; source: string }>} A promise that resolves to an object containing the total volume of Ethereum in USD, the total number of transactions, and the source of the data.
+ * @throws {Error} If both the Dune and fallback queries fail.
+ */
 export async function fetchETHData() {
   try {
     console.log("Fetching ETH data from Dune Analytics...");

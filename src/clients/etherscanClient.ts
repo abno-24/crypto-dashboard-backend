@@ -16,6 +16,12 @@ if (!ETH_API_KEY) {
 
 const BASE_URL = "https://api.etherscan.io/api";
 
+/**
+ * Fetches the total number of transactions in the last 24 hours from Etherscan.
+ *
+ * @returns {Promise<number>} The total number of transactions in the last 24 hours.
+ * @throws {Error} If the API request fails or the response is invalid.
+ */
 export async function fetchEthTxCountFromEtherscan(): Promise<number> {
   try {
     const currentTimestamp = Math.floor(Date.now() / 1000);

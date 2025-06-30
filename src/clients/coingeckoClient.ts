@@ -8,7 +8,7 @@ const COINGECKO_API_URL = "https://api.coingecko.com/api/v3/coins/ethereum";
 
 export async function fetchEthVolumeFromCoinGecko(): Promise<number> {
   try {
-    const res = await axios.get<CoinGeckoVolResponse>(COINGECKO_PROXY_URL);
+    const res = await axios.get<CoinGeckoVolResponse>(COINGECKO_API_URL);
 
     const volume = res.data.market_data?.total_volume?.usd;
 

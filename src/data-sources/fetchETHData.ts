@@ -3,7 +3,7 @@ import {
   fetchEthUsdVolume,
   fetchEthTransactionCount,
 } from "../clients/duneClient";
-import { fetchEthVolumeFromCoinGecko } from "../clients/coinGeckoClient";
+import { fetchEthVolumeFromCoinGecko } from "../clients/coingeckoClient";
 import { fetchEthTxCountFromEtherscan } from "../clients/etherscanClient";
 
 dotenv.config();

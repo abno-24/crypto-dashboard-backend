@@ -1,14 +1,15 @@
 import axios from "axios";
 import { CoinGeckoVolResponse } from "../types/coinGecko";
 
-const COINGECKO_PROXY_URL =
-  "https://corsproxy.io/?https://api.coingecko.com/api/v3/coins/ethereum";
-
 const COINGECKO_API_URL = "https://api.coingecko.com/api/v3/coins/ethereum";
 
 export async function fetchEthVolumeFromCoinGecko(): Promise<number> {
   try {
-    const res = await axios.get<CoinGeckoVolResponse>(COINGECKO_API_URL);
+    const res = await axios.get<CoinGeckoVolResponse>(COINGECKO_API_URL, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (compatible; MyApp/1.0)",
+      },
+    });
 
     const volume = res.data.market_data?.total_volume?.usd;
 

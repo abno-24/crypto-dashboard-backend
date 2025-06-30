@@ -7,6 +7,19 @@ export async function fetchAndStoreCryptoData() {
     const results = await Promise.all([fetchBTCData(), fetchETHData()]);
 
     for (const { coin, volume_usd, transaction_count } of results) {
+      if (
+        typeof volume_usd !== "number" ||
+        typeof transaction_count !== "number" ||
+        isNaN(volume_usd) ||
+        isNaN(transaction_count)
+      ) {
+        console.error(`❌ Skipping ${coin} due to invalid data:`, {
+          volume_usd,
+          transaction_count,
+        });
+        continue; // Skip this iteration
+      }
+
       await pool.query(
         `INSERT INTO crypto_data (coin, volume_usd, transaction_count) VALUES ($1, $2, $3)`,
         [coin, volume_usd, transaction_count]
